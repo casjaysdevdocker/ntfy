@@ -1,0 +1,28 @@
+#!/usr/bin/env sh
+# shellcheck shell=sh
+# shellcheck disable=SC2016
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+set -ex
+#mkdir -p "/tmp/ntfy" "/etc/ntfy" "/usr/local/share/template-files/config/ntfy"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# script run to files
+case "$(uname -m)" in
+aarch64 | arm64)
+  platorm="arm64"
+  url="$(curl -q -LSsf https://api.github.com/repos/binwiederhier/ntfy/releases/latest | grep 'browser_download_url' | sed 's|"||g;s|.*: ||g' | grep 'linux' | grep 'arm64.tar.gz$')"
+  ;;
+x86_64)
+  platorm="amd64"
+  url="$(curl -q -LSsf https://api.github.com/repos/binwiederhier/ntfy/releases/latest | grep 'browser_download_url' | sed 's|"||g;s|.*: ||g' | grep 'linux' | grep 'amd64.tar.gz$')"
+  ;;
+*)
+  echo "Unsupported platform"
+  exit 1
+  ;;
+esac
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+curl -q -LSSf "$url" -o "/tmp/ntfy.tar.gz"
+tar zxvf "/tmp/ntfy.tar.gz" --strip=1 -C "/tmp/ntfy"
+[ -f "/tmp/ntfy/ntfy" ] && cp -Rf "/tmp/ntfy/ntfy" "/usr/local/bin/ntfy"
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+exit

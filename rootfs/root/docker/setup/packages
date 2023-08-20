@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+# shellcheck shell=sh
+# shellcheck disable=SC2016
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+set -ex
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# script run to packages
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+exit
+
