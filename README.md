@@ -19,17 +19,18 @@ dockermgr update ntfy
 ## Install and run container
   
 ```shell
-mkdir -p "$HOME/.local/share/srv/docker/ntfy/volumes"
+dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs"
+mkdir -p "/var/lib/srv/$USER/docker/ntfy/rootfs"
 git clone "https://github.com/dockermgr/ntfy" "$HOME/.local/share/CasjaysDev/dockermgr/ntfy"
-cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/ntfy/rootfs/." "$HOME/.local/share/srv/docker/ntfy/volumes/"
+cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/ntfy/rootfs/." "$dockerHome/"
 docker run -d \
 --restart always \
 --privileged \
---name casjaysdevdocker-ntfy \
+--name casjaysdevdocker-ntfy-latest \
 --hostname ntfy \
 -e TZ=${TIMEZONE:-America/New_York} \
--v $HOME/.local/share/srv/docker/casjaysdevdocker-ntfy/volumes/data:/data:z \
--v $HOME/.local/share/srv/docker/casjaysdevdocker-ntfy/volumes/config:/config:z \
+-v "$dockerHome/data:/data:z" \
+-v "$dockerHome/config:/config:z" \
 -p 80:80 \
 casjaysdevdocker/ntfy:latest
 ```
@@ -46,8 +47,8 @@ services:
       - TZ=America/New_York
       - HOSTNAME=ntfy
     volumes:
-      - $HOME/.local/share/srv/docker/casjaysdevdocker-ntfy/volumes/data:/data:z
-      - $HOME/.local/share/srv/docker/casjaysdevdocker-ntfy/volumes/config:/config:z
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/data:/data:z"
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/config:/config:z"
     ports:
       - 80:80
     restart: always
