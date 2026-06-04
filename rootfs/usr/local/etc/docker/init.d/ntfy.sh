@@ -43,7 +43,7 @@ __script_exit() {
   fi
 }
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SCRIPT_NAME="$(basename "$0" 2>/dev/null)"
+SCRIPT_NAME="${0##*/}"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 export PATH="/usr/local/etc/docker/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -70,18 +70,27 @@ RESET_ENV="yes"
 PRE_EXEC_MESSAGE=""
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Default predefined variables
-WORKDIR=""                 # set working directory
-DATA_DIR="/data"           # set data directory
-WWW_DIR="/data/htdocs/www" # set the web root
+# set working directory
+WORKDIR=""
+# set data directory
+DATA_DIR="/data"
+# set the web root
+WWW_DIR="/data/htdocs/www"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-ETC_DIR="/etc/ntfy"     # set etc directory
-CONF_DIR="/config/ntfy" # set config directory
+# set etc directory
+ETC_DIR="/etc/ntfy"
+# set config directory
+CONF_DIR="/config/ntfy"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-RUN_DIR="/run/init.d"     # set scripts pid dir
-LOG_DIR="/data/logs/ntfy" # set log directory
+# set scripts pid dir
+RUN_DIR="/run/init.d"
+# set log directory
+LOG_DIR="/data/logs/ntfy"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-ROOT_FILE_PREFIX="/config/secure/auth/root" # directory to save username/password for root user
-USER_FILE_PREFIX="/config/secure/auth/user" # directory to save username/password for normal user
+# directory to save username/password for root user
+ROOT_FILE_PREFIX="/config/secure/auth/root"
+# directory to save username/password for normal user
+USER_FILE_PREFIX="/config/secure/auth/user"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # set the database directory
 DATABASE_DIR="${DATABASE_DIR_NTFY:-/data/db/ntfy}"
@@ -93,11 +102,16 @@ DATABASE_DIR="${DATABASE_DIR_NTFY:-/data/db/ntfy}"
 SERVICE_PORT="80"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # execute command variables
-SERVICE_UID="0"       # set the user id
-SERVICE_USER="root"   # execute command as another user
-EXEC_CMD_BIN="ntfy"   # command to execute
-EXEC_CMD_ARGS="serve" # command arguments
-EXEC_PRE_SCRIPT=""    # execute script before
+# set the user id
+SERVICE_UID="0"
+# execute command as another user
+SERVICE_USER="root"
+# command to execute
+EXEC_CMD_BIN="ntfy"
+# command arguments
+EXEC_CMD_ARGS="serve"
+# execute script before
+EXEC_PRE_SCRIPT=""
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Is this service a web server
 IS_WEB_SERVER="no"
@@ -109,12 +123,16 @@ IS_DATABASE_SERVICE="yes"
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # usernames
-user_name="${NTFY_USER_NAME:-}"           # normal user name
-root_user_name="${NTFY_ROOT_USER_NAME:-}" # root user name
+# normal user name
+user_name="${NTFY_USER_NAME:-}"
+# root user name
+root_user_name="${NTFY_ROOT_USER_NAME:-}"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # passwords [password/random]
-user_pass="${NTFY_USER_PASS_WORD:-}"      # normal user password
-root_user_pass="${NTFY_ROOT_PASS_WORD:-}" # root user password
+# normal user password
+user_pass="${NTFY_USER_PASS_WORD:-}"
+# root user password
+root_user_pass="${NTFY_ROOT_PASS_WORD:-}"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # Overwrite variables from files
 [ -f "${USER_FILE_PREFIX}/${SERVICE_NAME}_name" ] && user_name="$(<"${USER_FILE_PREFIX}/${SERVICE_NAME}_name")"
@@ -134,8 +152,10 @@ CMD_ENV=""
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # use this function to update config files - IE: change port
 __update_conf_files() {
-  local exitCode=0                   # default exit code
-  local user="${SERVICE_USER:-root}" # specifiy different user
+  # default exit code
+  local exitCode=0
+  # specifiy different user
+  local user="${SERVICE_USER:-root}"
 
   # delete files
   #__rm ""
@@ -181,8 +201,10 @@ __update_conf_files() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # function to run before executing
 __pre_execute() {
-  local exitCode=0                   # default exit code
-  local user="${SERVICE_USER:-root}" # specifiy different user
+  # default exit code
+  local exitCode=0
+  # specifiy different user
+  local user="${SERVICE_USER:-root}"
   # define commands
 
   # execute if directories is empty
@@ -208,10 +230,14 @@ __pre_execute() {
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # function to run after executing
 __post_execute() {
-  local exitCode=0                   # default exit code
-  local user="${SERVICE_USER:-root}" # specifiy different user
-  sleep 60                           # how long to wait before executing
-  echo "Running post commands"       # message
+  # default exit code
+  local exitCode=0
+  # specifiy different user
+  local user="${SERVICE_USER:-root}"
+  # how long to wait before executing
+  sleep 60
+  # message
+  echo "Running post commands"
   # execute commands
 
   return $exitCode
@@ -249,7 +275,6 @@ __create_env() {
 # EXEC_PRE_SCRIPT="${ENV_EXEC_PRE_SCRIPT:-$EXEC_PRE_SCRIPT}"        # execute before commands
 # EXEC_CMD_BIN="${ENV_EXEC_CMD_BIN:-$EXEC_CMD_BIN}"                 # command to execute
 # EXEC_CMD_ARGS="${ENV_EXEC_CMD_ARGS:-$EXEC_CMD_ARGS}"              # command arguments
-# EXEC_CMD_NAME="$(basename "$EXEC_CMD_BIN")"                       # set the binary name
 # ENV_USER_NAME="${user_name:-$ENV_USER_NAME}"                      #
 # ENV_USER_PASS="${user_pass:-$ENV_USER_PASS}"                      #
 # ENV_ROOT_USER_NAME="${root_user_name:-$ENV_ROOT_USER_NAME}"       #
@@ -344,7 +369,7 @@ __pgrep() { __pcheck "${1:-$EXEC_CMD_BIN}" || __ps aux 2>/dev/null | grep -Fw " 
 # check if process is already running
 __proc_check() {
   cmd_bin="$(type -P "${1:-$EXEC_CMD_BIN}")"
-  cmd_name="$(basename "${cmd_bin:-$EXEC_CMD_NAME}")"
+  local _b="${cmd_bin:-$EXEC_CMD_NAME}"; cmd_name="${_b##*/}"
   if __pgrep "$cmd_bin" || __pgrep "$cmd_name"; then
     SERVICE_IS_RUNNING="true"
     touch "$SERVICE_PID_FILE"
@@ -358,27 +383,46 @@ __proc_check() {
 # Allow ENV_ variable - Import env file
 [ -f "/config/env/${SERVICE_NAME:-$SCRIPT_NAME}.sh" ] && . "/config/env/${SERVICE_NAME:-$SCRIPT_NAME}.sh"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-SERVICE_EXIT_CODE=0                                           # default exit code
-WORKDIR="${ENV_WORKDIR:-$WORKDIR}"                            # change to directory
-WWW_DIR="${ENV_WWW_DIR:-$WWW_DIR}"                            # set default web dir
-ETC_DIR="${ENV_ETC_DIR:-$ETC_DIR}"                            # set default etc dir
-DATA_DIR="${ENV_DATA_DIR:-$DATA_DIR}"                         # set default data dir
-CONF_DIR="${ENV_CONF_DIR:-$CONF_DIR}"                         # set default config dir
-DATABASE_DIR="${ENV_DATABASE_DIR:-$DATABASE_DIR}"             # set database dir
-SERVICE_USER="${ENV_SERVICE_USER:-$SERVICE_USER}"             # execute command as another user
-SERVICE_UID="${ENV_SERVICE_UID:-$SERVICE_UID}"                # set the user id
-SERVICE_PORT="${ENV_SERVICE_PORT:-$SERVICE_PORT}"             # port which service is listening on
-PRE_EXEC_MESSAGE="${ENV_PRE_EXEC_MESSAGE:-$PRE_EXEC_MESSAGE}" # Show message before execute
+# default exit code
+SERVICE_EXIT_CODE=0
+# change to directory
+WORKDIR="${ENV_WORKDIR:-$WORKDIR}"
+# set default web dir
+WWW_DIR="${ENV_WWW_DIR:-$WWW_DIR}"
+# set default etc dir
+ETC_DIR="${ENV_ETC_DIR:-$ETC_DIR}"
+# set default data dir
+DATA_DIR="${ENV_DATA_DIR:-$DATA_DIR}"
+# set default config dir
+CONF_DIR="${ENV_CONF_DIR:-$CONF_DIR}"
+# set database dir
+DATABASE_DIR="${ENV_DATABASE_DIR:-$DATABASE_DIR}"
+# execute command as another user
+SERVICE_USER="${ENV_SERVICE_USER:-$SERVICE_USER}"
+# set the user id
+SERVICE_UID="${ENV_SERVICE_UID:-$SERVICE_UID}"
+# port which service is listening on
+SERVICE_PORT="${ENV_SERVICE_PORT:-$SERVICE_PORT}"
+# Show message before execute
+PRE_EXEC_MESSAGE="${ENV_PRE_EXEC_MESSAGE:-$PRE_EXEC_MESSAGE}"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # application specific
-EXEC_PRE_SCRIPT="${ENV_EXEC_PRE_SCRIPT:-$EXEC_PRE_SCRIPT}"                 # Pre
-EXEC_CMD_BIN="${ENV_EXEC_CMD_BIN:-$EXEC_CMD_BIN}"                          # command to execute
-EXEC_CMD_NAME="$(basename "$EXEC_CMD_BIN")"                                # set the binary name
-SERVICE_PID_FILE="/run/init.d/$EXEC_CMD_NAME.pid"                          # set the pid file location
-EXEC_CMD_ARGS="${ENV_EXEC_CMD_ARGS:-$EXEC_CMD_ARGS}"                       # command arguments
-SERVICE_PID_NUMBER="$(__pgrep)"                                            # check if running
-EXEC_CMD_BIN="$(type -P "$EXEC_CMD_BIN" || echo "$EXEC_CMD_BIN")"          # set full path
-EXEC_PRE_SCRIPT="$(type -P "$EXEC_PRE_SCRIPT" || echo "$EXEC_PRE_SCRIPT")" # set full path
+# Pre
+EXEC_PRE_SCRIPT="${ENV_EXEC_PRE_SCRIPT:-$EXEC_PRE_SCRIPT}"
+# command to execute
+EXEC_CMD_BIN="${ENV_EXEC_CMD_BIN:-$EXEC_CMD_BIN}"
+# set the binary name
+EXEC_CMD_NAME="${EXEC_CMD_BIN##*/}"
+# set the pid file location
+SERVICE_PID_FILE="/run/init.d/$EXEC_CMD_NAME.pid"
+# command arguments
+EXEC_CMD_ARGS="${ENV_EXEC_CMD_ARGS:-$EXEC_CMD_ARGS}"
+# check if running
+SERVICE_PID_NUMBER="$(__pgrep)"
+# set full path
+EXEC_CMD_BIN="$(type -P "$EXEC_CMD_BIN" || echo "$EXEC_CMD_BIN")"
+# set full path
+EXEC_PRE_SCRIPT="$(type -P "$EXEC_PRE_SCRIPT" || echo "$EXEC_PRE_SCRIPT")"
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # create auth directories
 [ -n "$USER_FILE_PREFIX" ] && { [ -d "$USER_FILE_PREFIX" ] || mkdir -p "$USER_FILE_PREFIX"; }
