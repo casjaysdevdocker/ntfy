@@ -19,8 +19,8 @@ dockermgr update ntfy
 ## Install and run container
   
 ```shell
-dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs"
-mkdir -p "/var/lib/srv/$USER/docker/ntfy/rootfs"
+dockerHome="/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs"
+mkdir -p "/srv/$USER/docker/ntfy/rootfs"
 git clone "https://github.com/dockermgr/ntfy" "$HOME/.local/share/CasjaysDev/dockermgr/ntfy"
 cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/ntfy/rootfs/." "$dockerHome/"
 docker run -d \
@@ -47,8 +47,8 @@ services:
       - TZ=America/New_York
       - HOSTNAME=ntfy
     volumes:
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/data:/data:z"
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/config:/config:z"
+      - "/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/data:/data:z"
+      - "/srv/$USER/docker/casjaysdevdocker/ntfy/ntfy/latest/rootfs/config:/config:z"
     ports:
       - 80:80
     restart: always
